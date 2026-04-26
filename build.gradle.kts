@@ -1,38 +1,47 @@
 plugins {
-    kotlin("jvm") version "2.3.10"
-    kotlin("plugin.serialization") version "2.0.0"
+    kotlin("jvm") version "2.1.10" //
+    kotlin("plugin.serialization") version "2.1.10"
+    id("org.jetbrains.compose") version "1.6.11"
+    kotlin("plugin.compose") version "2.1.10"
 }
 
-group = "org.example"
+group = "me.user"
 version = "1.0-SNAPSHOT"
-
-dependencies {
-    // Ktor клиент
-    implementation("io.ktor:ktor-client-core:2.3.10")
-    implementation("io.ktor:ktor-client-cio:2.3.10")
-    implementation("io.ktor:ktor-client-content-negotiation:2.3.10")
-    implementation("io.ktor:ktor-client-serialization:2.3.10")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.10")
-    implementation("org.slf4j:slf4j-simple:2.0.7")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
-}
 
 repositories {
     mavenCentral()
+    google()
+    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
 }
 
 dependencies {
-    testImplementation(kotlin("test"))
+    implementation(compose.desktop.currentOs)
+
+    val ktorVersion = "3.0.0"
+    implementation("io.ktor:ktor-client-core:$ktorVersion")
+    implementation("io.ktor:ktor-client-cio:$ktorVersion")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+    implementation("ch.qos.logback:logback-classic:1.4.11")
 }
 
-tasks.test {
-    useJUnitPlatform()
+compose.desktop {
+    application {
+        mainClass = "MainKt"
+    }
 }
 
-
-tasks.withType<JavaCompile> {
-    options.encoding = "UTF-8"
+kotlin {
+    jvmToolchain(21)
 }
-tasks.withType<JavaExec> {
-    jvmArgs("-Dfile.encoding=UTF-8")
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    kotlinOptions {
+        jvmTarget = "21"
+    }
+}
+
+tasks.withType<JavaCompile>().configureEach {
+    sourceCompatibility = "21"
+    targetCompatibility = "21"
 }
