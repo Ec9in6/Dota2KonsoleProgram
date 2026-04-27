@@ -100,7 +100,7 @@ fun main() = application {
                                 val country = profile?.loccountrycode ?: "Unknown"
                                 val leaderboard = player.leaderboard_rank?.let { "#$it" } ?: "No Rank"
 
-                                statsText = "Регион: $country | Лидеоборл: $leaderboard\n" +
+                                statsText = "Регион: $country | Лидерборд: $leaderboard\n" +
                                         "Победы: ${wl.win} | Лузы: ${wl.lose}\n" +
                                         "Ранг: ${player.rank_tier ?: "N/A"}"
 
